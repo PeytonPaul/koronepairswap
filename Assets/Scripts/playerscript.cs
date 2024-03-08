@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class playerscript : MonoBehaviour
 {
+    public static playerscript instance;
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firingPoint;
@@ -19,25 +20,39 @@ public class playerscript : MonoBehaviour
 
     private Vector2 mousePos;
 
-    // Start is called before the first frame update
+    //Create a Camera reference
+    private Camera mainCamera;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
+        //Cache a reference to Camera.main in the start function
+        mainCamera = Camera.main;
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         mx = Input.GetAxisRaw("Horizontal");
         my = Input.GetAxisRaw("Vertical");
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        float angle = Mathf.Atan2(mousePos.y - transform.position.y, mousePos.x - 
-        transform.position.x) * Mathf.Rad2Deg - 90f; 
+        //Instead of using using Camera.main, we use the variable that references it instead
+        mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        float angle = Mathf.Atan2(mousePos.y - transform.position.y, mousePos.x -
+        transform.position.x) * Mathf.Rad2Deg - 90f;
 
         transform.localRotation = Quaternion.Euler(0, 0, angle);
 
-        if (Input.GetMouseButton(0) && fireTimer <= 0f) {
+        if (Input.GetMouseButton(0) && fireTimer <= 0f)
+        {
             Shoot();
             fireTimer = fireRate;
         }
@@ -47,7 +62,7 @@ public class playerscript : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         rb.velocity = new Vector2(mx, my).normalized * speed;
     }

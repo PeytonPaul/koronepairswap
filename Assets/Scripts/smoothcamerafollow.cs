@@ -5,7 +5,6 @@ using UnityEngine.PlayerLoop;
 
 public class smoothcamerafollow : MonoBehaviour
 {
-
     [SerializeField] private Vector3 offset;
     [SerializeField] private float damping;
 
@@ -22,15 +21,5 @@ public class smoothcamerafollow : MonoBehaviour
         vel, damping);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //Commented Out Start() and Update()
 }

@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class FireBullet : MonoBehaviour
 {
+    [SerializeField] private int bulletsAmount = 10;
 
-    [SerializeField]private int bulletsAmount = 10;
-
-    [SerializeField]public float startAngle = 90f, endAngle = 270f;
+    [SerializeField] public float startAngle = 90f, endAngle = 270f;
 
     private Vector2 bulletMoveDirection;
-    // Start is called before the first frame update
+
     void Start()
     {
         InvokeRepeating("Fire", 0f, 3.5f);
@@ -29,13 +28,17 @@ public class FireBullet : MonoBehaviour
             Vector3 bulMoveVector = new Vector3(bulDirx, bulDiry, 0f);
             Vector2 bulDir = (bulMoveVector - transform.position).normalized;
 
-            GameObject bul = BulletPool.bulletPoolInstance.GetBullet();
+            //If player scipt is not equal to null then create bullets
+            if (playerscript.instance != null)
+            {
+                GameObject bul = BulletPool.bulletPoolInstance.GetBullet();
                 bul.transform.position = transform.position;
                 bul.transform.rotation = transform.rotation;
                 bul.SetActive(true);
                 bul.GetComponent<EnemyBullet>().SetMoveDirection(bulDir);
 
                 angle += angleStep;
+            }
         }
     }
 }

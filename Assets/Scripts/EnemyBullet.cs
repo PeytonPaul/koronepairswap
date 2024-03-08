@@ -12,13 +12,12 @@ public class EnemyBullet : MonoBehaviour
     {
         Invoke("Destroy", 6f);
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         moveSpeed = 5f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
@@ -28,7 +27,7 @@ public class EnemyBullet : MonoBehaviour
     {
         moveDirection = bulDir;
     }
-    
+
     private void Destroy()
     {
         gameObject.SetActive(false);
@@ -39,14 +38,17 @@ public class EnemyBullet : MonoBehaviour
         CancelInvoke();
     }
 
-    private void OnCollisionEnter2D(Collision2D other) 
-   {
-    if (other.gameObject.CompareTag("Player"))
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        LevelManager.manager.GameOver();
-        Destroy(other.gameObject);
-        
+        if (other.gameObject.CompareTag("Player"))
+        {
+            LevelManager.manager.GameOver();
+        }
+    }
 
-    } 
-   }
+    //User OnBecameInvisible to turn the bullets off when they are in not in cameras view
+    public void OnBecameInvisible()
+    {
+        gameObject.SetActive(false);
+    }
 }
